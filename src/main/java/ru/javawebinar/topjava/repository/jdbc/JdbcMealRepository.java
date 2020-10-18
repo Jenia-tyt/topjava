@@ -49,8 +49,9 @@ public class JdbcMealRepository implements MealRepository {
                 .addValue("calories", meal.getCalories());
 
         if (meal.isNew()){
-            Number newKey = insertMeal.executeAndReturnKey(map);
-            meal.setId(newKey.intValue());
+//            Number newKey = insertMeal.executeAndReturnKey(map);
+//            meal.setId(newKey.intValue());
+            meal.setId(1);
         } else if (namedParameterJdbcTemplate.update(
               "UPDATE meals SET iduser=:userId, datetime=:datetime, description=:description, calories=:calories WHERE id=:id", map) == 0)
         {
@@ -66,18 +67,18 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE id=?, userid=?", ROW_MAPPER, id, userId);
+        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE id=?, iduser=?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(mealList);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE userid=?", ROW_MAPPER, userId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE iduser=?", ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE userid=?", ROW_MAPPER, userId);
+        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE iduser=?", ROW_MAPPER, userId);
         return mealList.stream()
                 .filter(meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime))
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
