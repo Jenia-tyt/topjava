@@ -28,7 +28,7 @@ CREATE TABLE user_roles
 );
 
 CREATE TABLE meals(
-    id              INTEGER PRIMARY KEY DEFAULT nextval('id_meal'),
+    id              INTEGER UNIQUE PRIMARY KEY DEFAULT nextval('id_meal'),
     iduser          INTEGER                 NOT NULL,
     datetime        TIMESTAMP DEFAULT now() NOT NULL,
     description     VARCHAR                 NOT NULL,

@@ -40,10 +40,10 @@ public class JdbcMealRepository implements MealRepository {
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
+    public Meal save(Meal meal, int iduser) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
-                .addValue("iduser", userId)
+                .addValue("iduser", iduser)
                 .addValue("datetime", meal.getDateTime())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories());
@@ -52,7 +52,7 @@ public class JdbcMealRepository implements MealRepository {
             Number newKey = insertMeal.executeAndReturnKey(map);
             meal.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
-              "UPDATE meals SET iduser=:userId, datetime=:datetime, description=:description, calories=:calories WHERE id=:id", map) == 0)
+              "UPDATE meals SET iduser=:iduser, datetime=:datetime, description=:description, calories=:calories WHERE id=:id", map) == 0)
         {
             return null;
         }
@@ -66,14 +66,14 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE id=?, iduser=?", ROW_MAPPER, id, userId);
+//        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE id=?, iduser=?", ROW_MAPPER, id, userId);
+        List <Meal> mealList = jdbcTemplate.query("SELECT * FROM meals WHERE id=?", ROW_MAPPER, id);
         return DataAccessUtils.singleResult(mealList);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
         return jdbcTemplate.query("SELECT * FROM meals WHERE iduser=?", ROW_MAPPER, userId);
-//        return jdbcTemplate.query("SELECT * FROM meals WHERE iduser=?", ROW_MAPPER, userId);
     }
 
     @Override
@@ -83,5 +83,9 @@ public class JdbcMealRepository implements MealRepository {
                 .filter(meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime))
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public  List <Meal> allMealList (){
+        return jdbcTemplate.query("SELECT * FROM meals", ROW_MAPPER);
     }
 }
