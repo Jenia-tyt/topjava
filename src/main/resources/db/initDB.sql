@@ -31,9 +31,9 @@ CREATE TABLE meals(
     id              INTEGER UNIQUE PRIMARY KEY DEFAULT nextval('id_meal'),
     iduser          INTEGER                 NOT NULL,
     datetime        TIMESTAMP DEFAULT now() NOT NULL,
-    description     VARCHAR                 NOT NULL,
+    description     TEXT                    NOT NULL,
     calories        INTEGER                 NOT NULL,
     FOREIGN KEY (iduser) REFERENCES users (id)  ON DELETE CASCADE
 );
 
-CREATE INDEX meals_id_index ON meals (datetime);
+CREATE UNIQUE INDEX meals_id_index ON meals (iduser ,datetime);
