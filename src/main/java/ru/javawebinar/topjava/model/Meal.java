@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-package ru.javawebinar.topjava.model;
-
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
