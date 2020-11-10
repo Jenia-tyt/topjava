@@ -4,21 +4,21 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
-<jsp:include page="fragments/headTag.jsp"/>
+<%--<jsp:include page="fragments/headTag.jsp"/>--%>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp"/>
+<%--<jsp:include page="fragments/bodyHeader.jsp"/>--%>
 
 <section>
-    <h3><spring:message code="user.title"/></h3>
+    <h3>Пользователи</h3>
 
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th><spring:message code="user.name"/></th>
-            <th><spring:message code="user.email"/></th>
-            <th><spring:message code="user.roles"/></th>
-            <th><spring:message code="user.active"/></th>
-            <th><spring:message code="user.registered"/></th>
+            <th>Имя</th>
+            <th>Почта</th>
+            <th>Роли</th>
+            <th>Активный</th>
+            <th>Зарегистрирован></th>
         </tr>
         </thead>
         <c:forEach items="${users}" var="user">
