@@ -32,7 +32,7 @@
     <hr>
     <a href="meals/create"><spring:message code="meal.add"/></a>
     <hr>
-    <table ratingrating>
+    <table ratingrating class="table table-striped" id="datatable">
         <thead>
         <tr>
             <th><spring:message code="meal.dateTime"/></th>
