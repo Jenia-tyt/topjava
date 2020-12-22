@@ -17,7 +17,19 @@ public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserService service;
+    protected UserService service;
+
+    @Autowired
+    private UniqueMailValidator emailValidator;
+
+    @Autowired
+    @Qualifier("defaultValidator")
+    private Validator validator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(emailValidator);
+    }
 
     public List<User> getAll() {
         log.info("getAll");
@@ -45,15 +57,8 @@ public abstract class AbstractUserController {
         service.delete(id);
     }
 
-    public void update(User user, int id) {
-        log.info("update {} with id={}", user, id);
-        assureIdConsistent(user, id);
-        service.update(user);
-    }
-
     public void update(UserTo userTo, int id) {
         log.info("update {} with id={}", userTo, id);
-        assureIdConsistent(userTo, id);
         service.update(userTo);
     }
 
